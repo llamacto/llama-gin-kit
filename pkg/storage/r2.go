@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/google/uuid"
-	"github.com/zgiai/ginext/config"
+	"github.com/llamacto/llama-gin-kit/config"
 )
 
 // R2Storage implements storage operations for Cloudflare R2

@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/zgiai/ginext/config"
-	"github.com/zgiai/ginext/pkg/storage"
+	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/pkg/storage"
 )
 
 func main() {

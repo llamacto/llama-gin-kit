@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/zgiai/ginext/config"
-	"github.com/zgiai/ginext/internal/modules/user"
-	"github.com/zgiai/ginext/pkg/database"
+	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/internal/modules/user"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 
 func main() {

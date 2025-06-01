@@ -4,11 +4,11 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/internal/modules/explain"
-	"github.com/zgiai/ginext/internal/modules/tts"
-	"github.com/zgiai/ginext/internal/modules/user"
-	"github.com/zgiai/ginext/pkg/database"
-	"github.com/zgiai/ginext/pkg/middleware"
+	"github.com/llamacto/llama-gin-kit/internal/modules/explain"
+	"github.com/llamacto/llama-gin-kit/internal/modules/tts"
+	"github.com/llamacto/llama-gin-kit/internal/modules/user"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
+	"github.com/llamacto/llama-gin-kit/pkg/middleware"
 )
 
 // RegisterRoutes registers all v1 version routes

@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
 )
 
 // UserHandler 用户处理器

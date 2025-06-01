@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zgiai/ginext/pkg/email"
-	"github.com/zgiai/ginext/pkg/jwt"
-	"github.com/zgiai/ginext/pkg/logger"
-	"github.com/zgiai/ginext/pkg/utils"
+	"github.com/llamacto/llama-gin-kit/pkg/email"
+	"github.com/llamacto/llama-gin-kit/pkg/jwt"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/pkg/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 

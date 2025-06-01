@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/zgiai/ginext/config"
-	"github.com/zgiai/ginext/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
 )
 
 var (
@@ -146,9 +146,9 @@ func SendPasswordResetEmail(to string, newPassword string) error {
 
 // SendWelcomeEmail sends a welcome email
 func SendWelcomeEmail(to string, username string) error {
-	subject := "Welcome to ZGI Ginkit"
+	subject := "Welcome to Llama Gin Kit"
 	htmlContent := fmt.Sprintf(`
-		<h2>Welcome to ZGI Ginkit</h2>
+		<h2>Welcome to Llama Gin Kit</h2>
 		<p>Dear %s,</p>
 		<p>Thank you for registering as our user!</p>
 		<p>If you have any questions, please feel free to contact our support team.</p>

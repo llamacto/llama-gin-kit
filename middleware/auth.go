@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/zgiai/ginext/config"
-	"github.com/zgiai/ginext/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
 )
 
 type Claims struct {

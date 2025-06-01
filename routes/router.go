@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	v1 "github.com/zgiai/ginext/routes/v1"
+	v1 "github.com/llamacto/llama-gin-kit/routes/v1"
 )
 
 // RegisterRoutes registers all routes

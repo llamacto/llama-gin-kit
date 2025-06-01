@@ -173,7 +173,7 @@ const serviceTemplate = `package {{.PackageName}}
 
 import (
 	"context"
-	"github.com/zgiai/ginext/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
 )
 
 // {{.ModelName}}Service {{.ModelName}} 服务接口
@@ -228,8 +228,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/pkg/logger"
-	"github.com/zgiai/ginext/pkg/response"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/pkg/response"
 )
 
 // {{.ModelName}}Handler {{.ModelName}} 处理器
@@ -335,7 +335,7 @@ const repositoryTemplate = `package {{.PackageName}}
 import (
 	"context"
 	"gorm.io/gorm"
-	"github.com/zgiai/ginext/pkg/database"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 
 // {{.ModelName}}Repository {{.ModelName}} 仓储接口

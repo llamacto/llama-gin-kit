@@ -2,9 +2,9 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/internal/modules/tts"
-	"github.com/zgiai/ginext/middleware"
-	"github.com/zgiai/ginext/pkg/database"
+	"github.com/llamacto/llama-gin-kit/internal/modules/tts"
+	"github.com/llamacto/llama-gin-kit/middleware"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 
 // RegisterTTSRoutes registers all TTS-related routes

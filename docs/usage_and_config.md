@@ -1,10 +1,10 @@
 # Project Usage & Configuration Guide
 
-This document provides a step-by-step guide for configuring and using the ZGI-GinKit project. It is intended for international open-source users and is written in English for global accessibility.
+This document provides a step-by-step guide for configuring and using the Llama Gin Kit project. It is intended for international open-source users and is written in English for global accessibility.
 
 ## 1. Overview
 
-ZGI-GinKit is a modular, enterprise-level web development scaffold based on the Gin framework. It supports JWT authentication, database integration, Redis, email, OpenAI, and more.
+Llama Gin Kit is a modern Go scaffold for AI-powered development, built with Cursor and Windsurf conventions. It supports JWT authentication, database integration, Redis, email, OpenAI, and agent-based architecture out of the box.
 
 ## 2. Configuration Philosophy
 
@@ -17,8 +17,8 @@ ZGI-GinKit is a modular, enterprise-level web development scaffold based on the 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/zgiai/zgi-ginkit.git
-cd zgi-ginkit
+git clone https://github.com/llamacto/llama-gin-kit.git
+cd llama-gin-kit
 ```
 
 ### Step 2: Install Dependencies
@@ -33,7 +33,7 @@ go mod download
   ```bash
   cp .env.example .env
   ```
-- Fill in your actual values for all required variables in `.env` (database, JWT secret, email credentials, etc).
+- Fill in your actual values for all required variables in `.env` (database, JWT secret, LLM API keys, email credentials, etc).
 
 ### Step 4: Prepare YAML Config (Optional)
 
@@ -69,26 +69,39 @@ The server will start on the port specified in your environment variables or con
 - Never commit `.env` or real config files with secrets to version control.
 - Use strong, unique secrets for JWT, database, and third-party services.
 - Document any new configuration options in both the code and the example files.
+- Configure proper rate limiting for LLM API endpoints to manage costs.
 
 ## 6. Example Environment Variables
 
 ```
+# Database
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
+DB_NAME=llama_gin_kit
+
+# Security
 JWT_SECRET=your_jwt_secret
+
+# LLM APIs
 OPENAI_API_KEY=your_openai_key
-...
+ANTHROPIC_API_KEY=your_anthropic_key
+
+# Email
+EMAIL_FROM="Llama Gin Kit <noreply@llamacto.com>"
+EMAIL_RESEND_API_KEY=your_resend_key
 ```
 
 ## 7. Further Reading
 
 - [Gin Documentation](https://gin-gonic.com/docs/)
 - [Twelve-Factor App Methodology](https://12factor.net/config)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
 
 ## 8. Troubleshooting
 
 - If the application fails to start, check for missing or incorrect environment variables.
 - Ensure your database and Redis services are running and accessible.
+- Verify your LLM API keys are valid and have sufficient quota.
 - Review logs for detailed error messages.
 
 ---

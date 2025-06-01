@@ -10,16 +10,16 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/zgiai/ginext/config"
-	"github.com/zgiai/ginext/pkg/database"
-	"github.com/zgiai/ginext/pkg/email"
-	"github.com/zgiai/ginext/pkg/jwt"
-	"github.com/zgiai/ginext/routes"
+	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
+	"github.com/llamacto/llama-gin-kit/pkg/email"
+	"github.com/llamacto/llama-gin-kit/pkg/jwt"
+	"github.com/llamacto/llama-gin-kit/routes"
 )
 
-// @title ZGI-GinKit API
+// @title Llama Gin Kit API
 // @version 1.0
-// @description A Gin-based enterprise-level web development kit
+// @description A modern Go scaffold for AI-powered development with LLM integrations and agent-based architecture
 // @host localhost:6066
 // @BasePath /v1
 func main() {

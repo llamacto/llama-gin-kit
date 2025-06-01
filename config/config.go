@@ -223,7 +223,7 @@ func loadDatabaseConfig(config *Config) error {
 		Port:            port,
 		Username:        getEnv("DB_USERNAME", "postgres"),
 		Password:        getEnv("DB_PASSWORD", ""),
-		DBName:          getEnv("DB_NAME", "zgi_ginkit"),
+		DBName:          getEnv("DB_NAME", "llama_gin_kit"),
 		SSLMode:         getEnv("DB_SSLMODE", "disable"),
 		Timezone:        getEnv("DB_TIMEZONE", "Asia/Shanghai"),
 		MaxIdleConns:    maxIdleConns,
@@ -359,7 +359,7 @@ func loadAppConfig(config *Config) error {
 	}
 
 	config.App = AppConfig{
-		Name:      getEnv("APP_NAME", "ZGI-GinKit"),
+		Name:      getEnv("APP_NAME", "Llama-Gin-Kit"),
 		Version:   getEnv("APP_VERSION", "1.0.0"),
 		Secret:    getEnv("APP_SECRET", ""),
 		JWTSecret: getEnv("APP_JWT_SECRET", ""),

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/zgiai/ginext/config"
+	"github.com/llamacto/llama-gin-kit/config"
 )
 
 var (

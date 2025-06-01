@@ -1,4 +1,4 @@
-module github.com/zgiai/ginext
+module github.com/llamacto/llama-gin-kit
 
 go 1.23.0
 

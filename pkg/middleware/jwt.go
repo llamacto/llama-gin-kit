@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/pkg/jwt"
+	"github.com/llamacto/llama-gin-kit/pkg/jwt"
 )
 
 // JWTAuth is a JWT authentication middleware

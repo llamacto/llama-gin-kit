@@ -11,7 +11,7 @@ database:
   port: 5432
   username: <your-db-username>
   password: <your-db-password>
-  dbname: ginext
+  dbname: llama_gin_kit
   sslmode: disable
   timezone: Asia/Shanghai
   max_idle_conns: 10
@@ -27,7 +27,7 @@ redis:
   min_idle_conns: 5
 
 email:
-  from: "ZGI Ginkit <noreply@hi.zgi.ai>"
+  from: "Llama Gin Kit <noreply@llamacto.com>"
   resend_api_key: "<your-resend-api-key>"
 
 jwt:

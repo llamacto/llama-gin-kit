@@ -6,8 +6,8 @@ import (
 	"runtime/debug"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/pkg/logger"
-	"github.com/zgiai/ginext/pkg/response"
+	"github.com/llamacto/llama-gin-kit/pkg/logger"
+	"github.com/llamacto/llama-gin-kit/pkg/response"
 )
 
 // Recovery middleware handles panic recovery

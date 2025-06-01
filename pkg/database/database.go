@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/zgiai/ginext/config"
+	"github.com/llamacto/llama-gin-kit/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

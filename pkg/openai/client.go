@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/sashabaranov/go-openai"
-	"github.com/zgiai/ginext/config"
+	"github.com/llamacto/llama-gin-kit/config"
 	"io"
 )
 

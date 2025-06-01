@@ -2,8 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgiai/ginext/internal/modules/user"
-	"github.com/zgiai/ginext/pkg/database"
+	"github.com/llamacto/llama-gin-kit/internal/modules/user"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 
 // RegisterUserRoutes registers all user-related routes
