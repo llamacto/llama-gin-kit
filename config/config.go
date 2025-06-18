@@ -101,11 +101,18 @@ type AppConfig struct {
 	JWTExpire time.Duration `json:"jwt_expire"`
 }
 
-// Load loads configuration from .env file
+// Load loads configuration from environment variables or .env file
 func Load() (*Config, error) {
-	// 仅在开发环境加载 .env 文件
-	if os.Getenv("SERVER_MODE") == "" || os.Getenv("SERVER_MODE") == "debug" {
-		_ = godotenv.Load()
+	// 确定当前环境模式
+	mode := os.Getenv("SERVER_MODE")
+	
+	// 仅在开发环境尝试静默加载 .env 文件
+	if mode == "" || mode == "debug" || mode == "development" {
+		// 使用 Overload 可以确保即使找不到文件也不会产生警告
+		_ = godotenv.Overload()
+	} else {
+		// 生产环境中记录使用生产配置的信息
+		fmt.Println("Running in production mode, using system environment variables")
 	}
 
 	config := &Config{}
