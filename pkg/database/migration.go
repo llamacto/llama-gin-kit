@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/llamacto/llama-gin-kit/app/user"
-	"github.com/llamacto/llama-gin-kit/pkg/database/migrations"
 	"gorm.io/gorm"
 )
 
@@ -22,9 +21,9 @@ func RunMigrations(db *gorm.DB) error {
 	userMigrations := getUserMigrations()
 	allMigrations = append(allMigrations, userMigrations...)
 
-	// Add API key migrations
-	apiKeyMigration := migrations.CreateAPIKeysTable()
-	allMigrations = append(allMigrations, apiKeyMigration)
+	// Add API key migrations (temporarily disabled)
+	// apiKeyMigration := migrations.CreateAPIKeysTable()
+	// allMigrations = append(allMigrations, apiKeyMigration)
 
 	// Add organization migrations
 	// orgMigrations := organization.GetMigrations()

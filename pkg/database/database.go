@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/llamacto/llama-gin-kit/config"
-	"github.com/llamacto/llama-gin-kit/pkg/database/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -30,8 +29,8 @@ func getMigrations() []*gormigrate.Migration {
 				return nil
 			},
 		},
-		// API Keys migration
-		migrations.CreateAPIKeysTable(),
+		// API Keys migration (temporarily disabled)
+		// migrations.CreateAPIKeysTable(),
 	}
 
 	// Add organization migrations
@@ -123,7 +122,7 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
 
-	// API keys table already migrated through gormigrate
+	// API keys table migration temporarily disabled
 
 	DB = db
 	return db, nil
