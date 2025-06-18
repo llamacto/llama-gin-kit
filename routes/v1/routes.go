@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/llamacto/llama-gin-kit/app/apikey"
+	"github.com/llamacto/llama-gin-kit/app/organization"
 	"github.com/llamacto/llama-gin-kit/app/user"
 	"github.com/llamacto/llama-gin-kit/pkg/database"
 	"github.com/llamacto/llama-gin-kit/middleware"
@@ -55,6 +56,14 @@ func RegisterRoutes(engine *gin.Engine, v1 *gin.RouterGroup) {
 	
 	// Register API key routes
 	RegisterAPIKeyRoutes(v1, apiKeyService)
+
+	// Initialize organization module
+	orgRepo := organization.NewOrganizationRepository(db)
+	orgService := organization.NewOrganizationService(orgRepo, userService, db)
+	orgHandler := organization.NewHandler(orgService)
+
+	// Register organization routes
+	RegisterOrganizationRoutes(v1, orgHandler, apiKeyService)
 
 	// Example of a route that accepts either JWT or API key authentication
 	// 使用CombinedAuth中间件，支持JWT和API key双重认证

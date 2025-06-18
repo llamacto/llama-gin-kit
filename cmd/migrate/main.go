@@ -3,35 +3,28 @@ package main
 import (
 	"log"
 
-	"github.com/llamacto/llama-gin-kit/app/user"
 	"github.com/llamacto/llama-gin-kit/config"
 	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 
 func main() {
+	log.Println("Starting database migration process")
+
+	// Load configuration
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
+	// Initialize database connection
 	db, err := database.InitDB(cfg.Database)
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 
-	migrator := db.Migrator()
-
-	// 如果表存在，先删除
-	if migrator.HasTable(&user.User{}) {
-		if err := migrator.DropTable(&user.User{}); err != nil {
-			log.Fatalf("Failed to drop users table: %v", err)
-		}
-		log.Println("Dropped existing users table")
-	}
-
-	// 创建新表
-	if err := migrator.CreateTable(&user.User{}); err != nil {
-		log.Fatalf("Failed to create users table: %v", err)
+	// Run migrations using the new migration system
+	if err := database.RunMigrations(db); err != nil {
+		log.Fatalf("Migration failed: %v", err)
 	}
 
 	log.Println("Database migration completed successfully")
