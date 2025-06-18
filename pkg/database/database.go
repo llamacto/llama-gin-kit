@@ -17,6 +17,29 @@ import (
 
 var DB *gorm.DB
 
+// getMigrations returns all migrations for the application
+func getMigrations() []*gormigrate.Migration {
+	allMigrations := []*gormigrate.Migration{
+		{
+			ID: "initial",
+			Migrate: func(tx *gorm.DB) error {
+				// This is a placeholder for the initial migration
+				return nil
+			},
+			Rollback: func(tx *gorm.DB) error {
+				return nil
+			},
+		},
+		// API Keys migration
+		migrations.CreateAPIKeysTable(),
+	}
+
+	// Add organization migrations
+	// allMigrations = append(allMigrations, organization.GetMigrations()...)
+
+	return allMigrations
+}
+
 // InitDB initializes database connection and performs auto migration
 func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	// Configure custom logger
@@ -91,29 +114,15 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create index on tts_audio_history: %w", err)
 	}
-	
+
 	// Run migrations
-	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
-		{
-			ID: "initial",
-			Migrate: func(tx *gorm.DB) error {
-				// This is a placeholder for the initial migration
-				// which we assume has already been done manually above
-				return nil
-			},
-			Rollback: func(tx *gorm.DB) error {
-				return nil
-			},
-		},
-		// API Keys migration
-		migrations.CreateAPIKeysTable(),
-	})
-	
+	m := gormigrate.New(db, gormigrate.DefaultOptions, getMigrations())
+
 	// Migrate the schema
 	if err = m.Migrate(); err != nil {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
-	
+
 	// API keys table already migrated through gormigrate
 
 	DB = db

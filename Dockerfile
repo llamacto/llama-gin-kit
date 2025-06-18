@@ -40,7 +40,6 @@ WORKDIR /app
 
 # 从构建阶段复制二进制文件
 COPY --from=builder /app/server .
-COPY --from=builder /app/config/config.yaml ./config/
 
 # 暴露端口
 EXPOSE 8080

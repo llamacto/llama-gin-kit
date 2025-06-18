@@ -8,8 +8,8 @@ import (
 	"github.com/llamacto/llama-gin-kit/app/apikey"
 	"github.com/llamacto/llama-gin-kit/app/organization"
 	"github.com/llamacto/llama-gin-kit/app/user"
-	"github.com/llamacto/llama-gin-kit/pkg/database"
 	"github.com/llamacto/llama-gin-kit/middleware"
+	"github.com/llamacto/llama-gin-kit/pkg/database"
 	pkgmiddleware "github.com/llamacto/llama-gin-kit/pkg/middleware"
 )
 
@@ -53,17 +53,20 @@ func RegisterRoutes(engine *gin.Engine, v1 *gin.RouterGroup) {
 	// Initialize API key module
 	apiKeyRepo := apikey.NewAPIKeyRepository(db)
 	apiKeyService := apikey.NewAPIKeyService(apiKeyRepo)
-	
+
 	// Register API key routes
 	RegisterAPIKeyRoutes(v1, apiKeyService)
 
 	// Initialize organization module
-	orgRepo := organization.NewOrganizationRepository(db)
-	orgService := organization.NewOrganizationService(orgRepo, userService, db)
+	orgRepo := organization.NewRepository(db)
+	orgService := organization.NewService(orgRepo, userService, db)
 	orgHandler := organization.NewHandler(orgService)
 
 	// Register organization routes
 	RegisterOrganizationRoutes(v1, orgHandler, apiKeyService)
+
+	// Register team routes
+	TeamRoutes(v1)
 
 	// Example of a route that accepts either JWT or API key authentication
 	// 使用CombinedAuth中间件，支持JWT和API key双重认证
@@ -72,11 +75,11 @@ func RegisterRoutes(engine *gin.Engine, v1 *gin.RouterGroup) {
 		// 获取认证类型
 		authType := c.GetString("authType")
 		userID := c.GetUint("userID")
-		
+
 		c.JSON(http.StatusOK, gin.H{
-			"message": "认证成功",
+			"message":   "认证成功",
 			"auth_type": authType,
-			"user_id": userID,
+			"user_id":   userID,
 		})
 	})
 }

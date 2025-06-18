@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/llamacto/llama-gin-kit/app/organization"
 	"github.com/llamacto/llama-gin-kit/app/user"
+	"github.com/llamacto/llama-gin-kit/pkg/database/migrations"
 	"gorm.io/gorm"
 )
 
@@ -16,23 +16,27 @@ func RunMigrations(db *gorm.DB) error {
 	startTime := time.Now()
 
 	// Collect all migrations from different modules
-	migrations := []*gormigrate.Migration{}
-	
+	allMigrations := []*gormigrate.Migration{}
+
 	// Add user migrations
 	userMigrations := getUserMigrations()
-	migrations = append(migrations, userMigrations...)
-	
+	allMigrations = append(allMigrations, userMigrations...)
+
+	// Add API key migrations
+	apiKeyMigration := migrations.CreateAPIKeysTable()
+	allMigrations = append(allMigrations, apiKeyMigration)
+
 	// Add organization migrations
-	orgMigrations := organization.GetMigrations()
-	migrations = append(migrations, orgMigrations...)
-	
+	// orgMigrations := organization.GetMigrations()
+	// allMigrations = append(allMigrations, orgMigrations...)
+
 	// Initialize the migrator with all collected migrations
 	m := gormigrate.New(db, &gormigrate.Options{
 		TableName:      "migrations",
 		IDColumnName:   "id",
 		IDColumnSize:   255,
 		UseTransaction: true,
-	}, migrations)
+	}, allMigrations)
 
 	// Execute migrations
 	if err := m.Migrate(); err != nil {
@@ -62,7 +66,7 @@ func getUserMigrations() []*gormigrate.Migration {
 				// Create a default admin user if none exists
 				var count int64
 				db.Model(&user.User{}).Count(&count)
-				
+
 				if count == 0 {
 					adminUser := &user.User{
 						Username: "admin",
@@ -71,11 +75,11 @@ func getUserMigrations() []*gormigrate.Migration {
 						Nickname: "Admin User",
 						Status:   1, // 1: active, 0: disabled
 					}
-					
+
 					result := db.Create(adminUser)
 					return result.Error
 				}
-				
+
 				return nil
 			},
 			Rollback: func(db *gorm.DB) error {

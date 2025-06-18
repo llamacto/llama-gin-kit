@@ -105,7 +105,7 @@ type AppConfig struct {
 func Load() (*Config, error) {
 	// 确定当前环境模式
 	mode := os.Getenv("SERVER_MODE")
-	
+
 	// 仅在开发环境尝试静默加载 .env 文件
 	if mode == "" || mode == "debug" || mode == "development" {
 		// 使用 Overload 可以确保即使找不到文件也不会产生警告
@@ -230,7 +230,7 @@ func loadDatabaseConfig(config *Config) error {
 		Port:            port,
 		Username:        getEnv("DB_USERNAME", "postgres"),
 		Password:        getEnv("DB_PASSWORD", ""),
-		DBName:          getEnv("DB_NAME", "llama_gin_kit"),
+		DBName:          getEnv("DB_NAME", "gin-kit"),
 		SSLMode:         getEnv("DB_SSLMODE", "disable"),
 		Timezone:        getEnv("DB_TIMEZONE", "Asia/Shanghai"),
 		MaxIdleConns:    maxIdleConns,

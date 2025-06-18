@@ -80,8 +80,12 @@ func (h *UserHandler) Login(c *gin.Context) {
 // @Success 200 {object} User
 // @Router /users/profile [put]
 func (h *UserHandler) UpdateProfile(c *gin.Context) {
-	// TODO: 从 JWT token 中获取用户 ID
-	userID := uint(1) // 临时使用固定值
+	userIDVal, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授权访问"})
+		return
+	}
+	userID := userIDVal.(uint)
 
 	var req UserUpdateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -108,8 +112,12 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 // @Success 200 {string} string "密码修改成功"
 // @Router /users/password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
-	// TODO: 从 JWT token 中获取用户 ID
-	userID := uint(1) // 临时使用固定值
+	userIDVal, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授权访问"})
+		return
+	}
+	userID := userIDVal.(uint)
 
 	var req UserChangePasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -159,13 +167,19 @@ func (h *UserHandler) ResetPassword(c *gin.Context) {
 // @Success 200 {object} User
 // @Router /users/profile [get]
 func (h *UserHandler) GetProfile(c *gin.Context) {
-	userID, exists := c.Get("user_id")
+	userIDVal, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授权访问"})
 		return
 	}
 
-	user, err := h.service.Get(c.Request.Context(), userID.(uint))
+	userID, ok := userIDVal.(uint)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "用户ID类型错误"})
+		return
+	}
+
+	user, err := h.service.GetProfile(userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -181,8 +195,12 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 // @Success 200 {string} string "账户已删除"
 // @Router /users/account [delete]
 func (h *UserHandler) DeleteAccount(c *gin.Context) {
-	// TODO: 从 JWT token 中获取用户 ID
-	userID := uint(1) // 临时使用固定值
+	userIDVal, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授权访问"})
+		return
+	}
+	userID := userIDVal.(uint)
 
 	if err := h.service.DeleteAccount(userID); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
