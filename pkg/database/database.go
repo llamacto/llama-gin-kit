@@ -7,7 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-gormigrate/gormigrate/v2"
+	"github.com/llamacto/llama-gin-kit/app/apikey"
 	"github.com/llamacto/llama-gin-kit/config"
+	"github.com/llamacto/llama-gin-kit/pkg/database/migrations"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -88,6 +91,33 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	err = db.Exec(`CREATE INDEX IF NOT EXISTS idx_tts_audio_history_user_id ON tts_audio_history(user_id)`).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed to create index on tts_audio_history: %w", err)
+	}
+	
+	// Run migrations
+	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
+		{
+			ID: "initial",
+			Migrate: func(tx *gorm.DB) error {
+				// This is a placeholder for the initial migration
+				// which we assume has already been done manually above
+				return nil
+			},
+			Rollback: func(tx *gorm.DB) error {
+				return nil
+			},
+		},
+		// API Keys migration
+		migrations.CreateAPIKeysTable(),
+	})
+	
+	// Migrate the schema
+	if err = m.Migrate(); err != nil {
+		return nil, fmt.Errorf("failed to run migrations: %w", err)
+	}
+	
+	// Auto-migrate the API key model to ensure all fields are up to date
+	if err = db.AutoMigrate(&apikey.APIKey{}); err != nil {
+		return nil, fmt.Errorf("failed to auto-migrate API keys table: %w", err)
 	}
 
 	DB = db

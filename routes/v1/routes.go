@@ -4,11 +4,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/llamacto/llama-gin-kit/internal/modules/explain"
-	"github.com/llamacto/llama-gin-kit/internal/modules/tts"
-	"github.com/llamacto/llama-gin-kit/internal/modules/user"
+	"github.com/llamacto/llama-gin-kit/app/apikey"
 	"github.com/llamacto/llama-gin-kit/pkg/database"
-	"github.com/llamacto/llama-gin-kit/pkg/middleware"
 )
 
 // RegisterRoutes registers all v1 version routes
@@ -17,45 +14,15 @@ func RegisterRoutes(engine *gin.Engine, v1 *gin.RouterGroup) {
 	RegisterHealthRoutes(v1)
 
 	// Initialize repositories and services
-	db := database.GetDB()
+	db := database.DB
 	if db == nil {
 		log.Fatal("Database connection not initialized")
 	}
 
-	// Initialize user module
-	userRepo := user.NewUserRepository(db)
-	userService := user.NewUserService(userRepo)
-	userHandler := user.NewUserHandler(userService)
-
-	// Public auth routes
-	v1.POST("/register", userHandler.Register)
-	v1.POST("/login", userHandler.Login)
-	v1.POST("/password/reset", userHandler.ResetPassword)
-
-	// Protected user routes
-	userGroup := v1.Group("/users")
-	userGroup.Use(middleware.JWTAuth())
-	{
-		userGroup.GET("/profile", userHandler.GetProfile)
-		userGroup.PUT("/profile", userHandler.UpdateProfile)
-		userGroup.PUT("/password", userHandler.ChangePassword)
-		userGroup.DELETE("/account", userHandler.DeleteAccount)
-
-		// Admin routes
-		userGroup.GET("", userHandler.List)
-		userGroup.GET("/:id", userHandler.Get)
-		userGroup.GET("/:id/info", userHandler.GetUserInfo)
-	}
-
-	// Initialize TTS service for explain module
-	ttsRepo := tts.NewTTSRepository(db)
-	ttsService := tts.NewTTSService(ttsRepo)
-
-	// Initialize Explain module
-	if err := explain.InitModule(engine, db, ttsService); err != nil {
-		log.Printf("Failed to initialize explain module: %v", err)
-	}
-
-	// Register TTS routes
-	RegisterTTSRoutes(v1)
+	// Initialize API key module
+	apiKeyRepo := apikey.NewAPIKeyRepository(db)
+	apiKeyService := apikey.NewAPIKeyService(apiKeyRepo)
+	
+	// Register API key routes
+	RegisterAPIKeyRoutes(v1, apiKeyService)
 }
