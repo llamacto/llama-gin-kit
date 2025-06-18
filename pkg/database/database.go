@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/llamacto/llama-gin-kit/app/apikey"
 	"github.com/llamacto/llama-gin-kit/config"
 	"github.com/llamacto/llama-gin-kit/pkg/database/migrations"
 	"gorm.io/driver/postgres"
@@ -115,10 +114,7 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
 	
-	// Auto-migrate the API key model to ensure all fields are up to date
-	if err = db.AutoMigrate(&apikey.APIKey{}); err != nil {
-		return nil, fmt.Errorf("failed to auto-migrate API keys table: %w", err)
-	}
+	// API keys table already migrated through gormigrate
 
 	DB = db
 	return db, nil

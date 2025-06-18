@@ -21,10 +21,10 @@ func RegisterOrganizationRoutes(router *gin.RouterGroup, handler *organization.H
 	orgRouter.GET("/:id", handler.GetOrganization)
 	orgRouter.PUT("/:id", handler.UpdateOrganization)
 	orgRouter.DELETE("/:id", handler.DeleteOrganization)
-	orgRouter.GET("/:organization_id/teams", handler.ListTeams)
-	orgRouter.GET("/:organization_id/members", handler.ListMembers)
-	orgRouter.GET("/:organization_id/roles", handler.ListRoles)
-	orgRouter.GET("/:organization_id/invitations", handler.ListInvitations)
+	orgRouter.GET("/:id/teams", handler.ListTeams)
+	orgRouter.GET("/:id/members", handler.ListMembers)
+	orgRouter.GET("/:id/roles", handler.ListRoles)
+	orgRouter.GET("/:id/invitations", handler.ListInvitations)
 	
 	// Team endpoints
 	teamRouter := authRouter.Group("/teams")
