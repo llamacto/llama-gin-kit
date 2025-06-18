@@ -6,22 +6,22 @@ services:
     container_name: llama-gin-kit
     restart: always
     ports:
-      - "8088:8080"
+      - "8088:6066"
     environment:
       SERVER_MODE: "production"
-      SERVER_PORT: "8080"
+      SERVER_PORT: "6066"
       DB_HOST: "postgres"
       DB_PORT: "5432"
-      DB_USER: "postgres"
+      DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
-      DB_NAME: "llama_gin_kit"
+      DB_NAME: "gin-kit"
       JWT_SECRET: "development_jwt_secret_key"
       TZ: "Asia/Shanghai"
     depends_on:
       - postgres
     networks:
       - llama-network
-  
+
   postgres:
     image: postgres:14-alpine
     container_name: llama-postgres
@@ -29,7 +29,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: llama_gin_kit
+      POSTGRES_DB: gin-kit
     ports:
       - "5432:5432"
     networks:

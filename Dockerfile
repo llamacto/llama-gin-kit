@@ -42,7 +42,7 @@ WORKDIR /app
 COPY --from=builder /app/server .
 
 # 暴露端口
-EXPOSE 8080
+EXPOSE 6066
 
 # 启动应用
 CMD ["./server"]

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: llama-gin-kit-prod
+    restart: always
+    ports:
+      - "8088:6066"
+    environment:
+      SERVER_MODE: "production"
+      SERVER_PORT: "6066"
+      DB_HOST: "47.91.31.227"
+      DB_PORT: "31828"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "yXWIfU096Pgr378m52O1YlhJo4EsiDFv"
+      DB_NAME: "gin-kit"
+      JWT_SECRET: "your-secret-key-here"
+      TZ: "Asia/Shanghai"
+    networks:
+      - llama-network
+
+networks:
+  llama-network:
+    driver: bridge
