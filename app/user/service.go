@@ -262,7 +262,7 @@ func (s *UserServiceImpl) GetUserByID(id string) (*UserInfo, error) {
 // GetByID 根据用户 ID 获取用户信息
 func (s *UserServiceImpl) GetByID(id uint) (*User, error) {
 	ctx := context.Background()
-	user, err := s.repo.GetByID(ctx, id)
+	user, err := s.repo.Get(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("获取用户信息失败: %w", err)
 	}

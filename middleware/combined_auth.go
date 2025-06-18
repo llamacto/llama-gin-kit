@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/llamacto/llama-gin-kit/app/apikey"
+	"github.com/llamacto/llama-gin-kit/pkg/middleware"
 )
 
 // CombinedAuth is a middleware that supports both API key and JWT authentication
@@ -31,7 +32,7 @@ func CombinedAuth(apiKeyService apikey.Service) gin.HandlerFunc {
 		}
 		
 		// If API key is not provided or is invalid, fall back to JWT auth
-		jwtAuth := JWT()
+		jwtAuth := middleware.JWTAuth()
 		jwtAuth(c)
 		
 		// If JWT auth was successful, set authType to jwt

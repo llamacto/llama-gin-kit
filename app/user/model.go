@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// User 用户模型
+// User represents the user model
 type User struct {
 	ID        uint       `gorm:"primarykey" json:"id"`
 	CreatedAt time.Time  `json:"created_at"`
@@ -17,16 +17,16 @@ type User struct {
 	Avatar    string     `gorm:"size:255" json:"avatar"`
 	Phone     string     `gorm:"size:20" json:"phone"`
 	Bio       string     `gorm:"size:500" json:"bio"`
-	Status    int        `gorm:"default:1" json:"status"` // 1: 正常, 0: 禁用
+	Status    int        `gorm:"default:1" json:"status"` // 1: active, 0: disabled
 	LastLogin *time.Time `json:"last_login"`
 }
 
-// TableName 指定表名
+// TableName specifies the database table name
 func (User) TableName() string {
 	return "users"
 }
 
-// UserInfo 用户信息
+// UserInfo represents user information data transfer object
 type UserInfo struct {
 	ID        string     `json:"id"`
 	Username  string     `json:"username"`

@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/llamacto/llama-gin-kit/app/user"
 	"github.com/llamacto/llama-gin-kit/config"
-	"github.com/llamacto/llama-gin-kit/internal/modules/user"
 	"github.com/llamacto/llama-gin-kit/pkg/database"
 )
 

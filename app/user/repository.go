@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// UserRepository 用户仓库接口
+// UserRepository interface for user data access
 type UserRepository interface {
 	Create(ctx context.Context, user *User) error
 	Update(ctx context.Context, user *User) error
@@ -20,32 +20,32 @@ type UserRepository interface {
 	FindByID(id string) (*UserInfo, error)
 }
 
-// UserRepositoryImpl 用户仓库实现
+// UserRepositoryImpl implementation of UserRepository
 type UserRepositoryImpl struct {
 	db *gorm.DB
 }
 
-// NewUserRepository 创建用户仓库
+// NewUserRepository creates a new user repository
 func NewUserRepository(db *gorm.DB) UserRepository {
 	return &UserRepositoryImpl{db: db}
 }
 
-// Create 创建用户
+// Create adds a new user
 func (r *UserRepositoryImpl) Create(ctx context.Context, user *User) error {
 	return r.db.WithContext(ctx).Create(user).Error
 }
 
-// Update 更新用户
+// Update modifies an existing user
 func (r *UserRepositoryImpl) Update(ctx context.Context, user *User) error {
 	return r.db.WithContext(ctx).Save(user).Error
 }
 
-// Delete 删除用户
+// Delete removes a user by ID
 func (r *UserRepositoryImpl) Delete(ctx context.Context, id uint) error {
 	return r.db.WithContext(ctx).Delete(&User{}, id).Error
 }
 
-// Get 获取用户
+// Get retrieves a user by ID
 func (r *UserRepositoryImpl) Get(ctx context.Context, id uint) (*User, error) {
 	var user User
 	if err := r.db.WithContext(ctx).First(&user, id).Error; err != nil {
@@ -54,7 +54,7 @@ func (r *UserRepositoryImpl) Get(ctx context.Context, id uint) (*User, error) {
 	return &user, nil
 }
 
-// List 获取用户列表
+// List retrieves users with pagination
 func (r *UserRepositoryImpl) List(ctx context.Context, page, pageSize int) ([]*User, int64, error) {
 	var users []*User
 	var total int64
@@ -71,7 +71,7 @@ func (r *UserRepositoryImpl) List(ctx context.Context, page, pageSize int) ([]*U
 	return users, total, nil
 }
 
-// GetByUsername 根据用户名获取用户
+// GetByUsername retrieves a user by username
 func (r *UserRepositoryImpl) GetByUsername(ctx context.Context, username string) (*User, error) {
 	var user User
 	if err := r.db.WithContext(ctx).Where("username = ?", username).First(&user).Error; err != nil {
@@ -80,7 +80,7 @@ func (r *UserRepositoryImpl) GetByUsername(ctx context.Context, username string)
 	return &user, nil
 }
 
-// GetByEmail 根据邮箱获取用户
+// GetByEmail retrieves a user by email
 func (r *UserRepositoryImpl) GetByEmail(ctx context.Context, email string) (*User, error) {
 	var user User
 	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
@@ -89,7 +89,7 @@ func (r *UserRepositoryImpl) GetByEmail(ctx context.Context, email string) (*Use
 	return &user, nil
 }
 
-// ExistsByEmail 检查邮箱是否存在
+// ExistsByEmail checks if an email is already registered
 func (r *UserRepositoryImpl) ExistsByEmail(ctx context.Context, email string) (bool, error) {
 	var count int64
 	if err := r.db.WithContext(ctx).Model(&User{}).Where("email = ?", email).Count(&count).Error; err != nil {
@@ -98,7 +98,7 @@ func (r *UserRepositoryImpl) ExistsByEmail(ctx context.Context, email string) (b
 	return count > 0, nil
 }
 
-// FindByID 根据ID查找用户
+// FindByID retrieves user information by ID
 func (r *UserRepositoryImpl) FindByID(id string) (*UserInfo, error) {
 	var user User
 	if err := r.db.First(&user, "id = ?", id).Error; err != nil {
