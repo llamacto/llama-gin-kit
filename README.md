@@ -2,6 +2,71 @@
 
 Llama Gin Kit is a modern Go scaffold for AI-powered development, built with Cursor and Windsurf conventions. It supports automated testing, LLM APIs, and agent-based architecture out of the box.
 
+## 🚀 Quick Start - Project Information
+
+访问根路径获取项目完整信息：
+
+```bash
+curl http://localhost:6066/
+```
+
+返回格式：
+```json
+{
+  "success": true,
+  "message": "Welcome to Llama Gin Kit API",
+  "data": {
+    "name": "Llama Gin Kit",
+    "description": "A comprehensive REST API service built with Go and Gin framework...",
+    "version": "v1.0.0",
+    "go_version": "1.23.0+",
+    "build_time": "2025-06-19 19:01:55",
+    "environment": "debug",
+    "api": {
+      "version": "v1",
+      "base_url": "/v1",
+      "endpoints": [
+        "POST /v1/register - User registration",
+        "POST /v1/login - User login",
+        "GET /v1/users/profile - Get user profile",
+        "POST /v1/organizations - Create organization",
+        "GET /v1/organizations - List organizations",
+        "POST /v1/teams - Create team",
+        "GET /v1/teams/:id - Get team details",
+        "POST /v1/apikeys - Create API key",
+        "GET /v1/apikeys - List API keys"
+      ],
+      "features": [
+        "JWT Authentication",
+        "API Key Authentication",
+        "User Management",
+        "Organization Management",
+        "Team Management",
+        "Role-based Access Control",
+        "Email Notifications",
+        "PostgreSQL Database",
+        "Docker Support",
+        "Swagger Documentation"
+      ]
+    },
+    "links": {
+      "documentation": "/swagger/index.html",
+      "health": "/v1/health/status",
+      "swagger": "/swagger/*any"
+    }
+  }
+}
+```
+
+## 🎯 API 入口点
+
+| 端点 | 描述 | 用途 |
+|------|------|------|
+| `GET /` | 项目信息和API概览 | 了解项目功能和可用接口 |
+| `GET /ping` | 简单健康检查 | 快速验证服务状态 |
+| `GET /v1/health/status` | 详细健康状态 | 完整的服务健康检查 |
+| `GET /swagger/index.html` | API文档 | 完整的API文档和测试界面 |
+
 ## Features
 
 - 📦 Modular architecture designed for AI coding
