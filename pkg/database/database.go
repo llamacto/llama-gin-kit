@@ -8,6 +8,12 @@ import (
 	"time"
 
 	"github.com/go-gormigrate/gormigrate/v2"
+	"github.com/llamacto/llama-gin-kit/app/apikey"
+	"github.com/llamacto/llama-gin-kit/app/authorization"
+	"github.com/llamacto/llama-gin-kit/app/member"
+	"github.com/llamacto/llama-gin-kit/app/organization"
+	"github.com/llamacto/llama-gin-kit/app/team"
+	"github.com/llamacto/llama-gin-kit/app/user"
 	"github.com/llamacto/llama-gin-kit/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,25 +24,43 @@ var DB *gorm.DB
 
 // getMigrations returns all migrations for the application
 func getMigrations() []*gormigrate.Migration {
-	allMigrations := []*gormigrate.Migration{
+	return []*gormigrate.Migration{
 		{
-			ID: "initial",
+			ID: "20250620_initial_schema",
 			Migrate: func(tx *gorm.DB) error {
-				// This is a placeholder for the initial migration
-				return nil
+				return tx.AutoMigrate(
+					&user.User{},
+					&organization.Organization{},
+					&member.Member{},
+					&team.Team{},
+					&apikey.APIKey{},
+					&authorization.Role{},
+					&authorization.Permission{},
+					&authorization.UserRole{},
+					&authorization.OrganizationRole{},
+					&authorization.TeamRole{},
+					&authorization.Policy{},
+					&authorization.RolePermission{},
+				)
 			},
 			Rollback: func(tx *gorm.DB) error {
-				return nil
+				return tx.Migrator().DropTable(
+					&authorization.RolePermission{},
+					&authorization.Policy{},
+					&authorization.TeamRole{},
+					&authorization.OrganizationRole{},
+					&authorization.UserRole{},
+					&authorization.Permission{},
+					&authorization.Role{},
+					&apikey.APIKey{},
+					&team.Team{},
+					&member.Member{},
+					&organization.Organization{},
+					&user.User{},
+				)
 			},
 		},
-		// API Keys migration (temporarily disabled)
-		// migrations.CreateAPIKeysTable(),
 	}
-
-	// Add organization migrations
-	// allMigrations = append(allMigrations, organization.GetMigrations()...)
-
-	return allMigrations
 }
 
 // InitDB initializes database connection and performs auto migration
@@ -46,7 +70,7 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
 			SlowThreshold:             time.Second,
-			LogLevel:                  logger.Info,
+			LogLevel:                  logger.Warn,
 			IgnoreRecordNotFoundError: true,
 			Colorful:                  true,
 		},
@@ -84,36 +108,6 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	// Drop the table if it exists and recreate it with the correct structure
-	err = db.Exec(`DROP TABLE IF EXISTS tts_audio_history`).Error
-	if err != nil {
-		return nil, fmt.Errorf("failed to drop tts_audio_history table: %w", err)
-	}
-
-	// Create table manually with the structure matching our model
-	err = db.Exec(`
-		CREATE TABLE tts_audio_history (
-			id VARCHAR(36) PRIMARY KEY,
-			user_id VARCHAR(36) NOT NULL,
-			text TEXT NOT NULL,
-			voice VARCHAR(50) DEFAULT 'alloy',
-			audio_url VARCHAR(255) NOT NULL,
-			duration NUMERIC(10,4),
-			created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-			updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-		)
-	`).Error
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to create tts_audio_history table: %w", err)
-	}
-
-	// Create index on user_id
-	err = db.Exec(`CREATE INDEX IF NOT EXISTS idx_tts_audio_history_user_id ON tts_audio_history(user_id)`).Error
-	if err != nil {
-		return nil, fmt.Errorf("failed to create index on tts_audio_history: %w", err)
-	}
-
 	// Run migrations
 	m := gormigrate.New(db, gormigrate.DefaultOptions, getMigrations())
 
@@ -121,8 +115,6 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	if err = m.Migrate(); err != nil {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
-
-	// API keys table migration temporarily disabled
 
 	DB = db
 	return db, nil

@@ -219,15 +219,16 @@ func (h *UserHandler) DeleteAccount(c *gin.Context) {
 // @Success 200 {object} User
 // @Router /users/{id} [get]
 func (h *UserHandler) Get(c *gin.Context) {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的用户ID"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
 
-	user, err := h.service.GetProfile(uint(id))
+	user, err := h.service.GetByID(uint(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
@@ -254,10 +255,7 @@ func (h *UserHandler) List(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"total": total,
-		"items": users,
-	})
+	c.JSON(http.StatusOK, gin.H{"total": total, "list": users})
 }
 
 // GetUserInfo 获取用户信息
@@ -266,21 +264,22 @@ func (h *UserHandler) List(c *gin.Context) {
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param id path string true "用户ID"
+// @Param id path int true "用户ID"
 // @Success 200 {object} UserInfo
-// @Router /v1/users/{id}/info [get]
+// @Router /users/info/{id} [get]
 func (h *UserHandler) GetUserInfo(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "用户ID不能为空"})
-		return
-	}
-
-	user, err := h.service.GetUserByID(id)
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	userInfo, err := h.service.GetUserByID(uint(id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, userInfo)
 }

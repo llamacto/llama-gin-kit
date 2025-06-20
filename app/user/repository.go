@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -17,7 +16,7 @@ type UserRepository interface {
 	GetByUsername(ctx context.Context, username string) (*User, error)
 	GetByEmail(ctx context.Context, email string) (*User, error)
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
-	FindByID(id string) (*UserInfo, error)
+	FindByID(id uint) (*UserInfo, error)
 }
 
 // UserRepositoryImpl implementation of UserRepository
@@ -99,14 +98,14 @@ func (r *UserRepositoryImpl) ExistsByEmail(ctx context.Context, email string) (b
 }
 
 // FindByID retrieves user information by ID
-func (r *UserRepositoryImpl) FindByID(id string) (*UserInfo, error) {
+func (r *UserRepositoryImpl) FindByID(id uint) (*UserInfo, error) {
 	var user User
 	if err := r.db.First(&user, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
 	return &UserInfo{
-		ID:        fmt.Sprintf("%d", user.ID),
+		ID:        user.ID,
 		Username:  user.Username,
 		Email:     user.Email,
 		Nickname:  user.Nickname,

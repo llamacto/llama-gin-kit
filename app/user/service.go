@@ -27,7 +27,7 @@ type UserService interface {
 	ResetPassword(req *UserPasswordResetRequest) error
 	GetProfile(userID uint) (*User, error)
 	DeleteAccount(userID uint) error
-	GetUserByID(id string) (*UserInfo, error)
+	GetUserByID(id uint) (*UserInfo, error)
 	GetByID(id uint) (*User, error)
 }
 
@@ -250,21 +250,13 @@ func (s *UserServiceImpl) DeleteAccount(userID uint) error {
 	return nil
 }
 
-// GetUserByID 根据ID获取用户信息
-func (s *UserServiceImpl) GetUserByID(id string) (*UserInfo, error) {
-	user, err := s.repo.FindByID(id)
-	if err != nil {
-		return nil, fmt.Errorf("获取用户信息失败: %w", err)
-	}
-	return user, nil
+// GetUserByID retrieves user information by ID.
+func (s *UserServiceImpl) GetUserByID(id uint) (*UserInfo, error) {
+	return s.repo.FindByID(id)
 }
 
-// GetByID 根据用户 ID 获取用户信息
+// GetByID retrieves a user by their ID.
 func (s *UserServiceImpl) GetByID(id uint) (*User, error) {
 	ctx := context.Background()
-	user, err := s.repo.Get(ctx, id)
-	if err != nil {
-		return nil, fmt.Errorf("获取用户信息失败: %w", err)
-	}
-	return user, nil
+	return s.repo.Get(ctx, id)
 }
