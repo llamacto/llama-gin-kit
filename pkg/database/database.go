@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/llamacto/llama-gin-kit/app/apikey"
-	"github.com/llamacto/llama-gin-kit/app/authorization"
 	"github.com/llamacto/llama-gin-kit/app/member"
 	"github.com/llamacto/llama-gin-kit/app/organization"
 	"github.com/llamacto/llama-gin-kit/app/team"
@@ -31,30 +30,16 @@ func getMigrations() []*gormigrate.Migration {
 				return tx.AutoMigrate(
 					&user.User{},
 					&organization.Organization{},
-					&member.Member{},
 					&team.Team{},
 					&apikey.APIKey{},
-					&authorization.Role{},
-					&authorization.Permission{},
-					&authorization.UserRole{},
-					&authorization.OrganizationRole{},
-					&authorization.TeamRole{},
-					&authorization.Policy{},
-					&authorization.RolePermission{},
+					&member.Member{},
 				)
 			},
 			Rollback: func(tx *gorm.DB) error {
 				return tx.Migrator().DropTable(
-					&authorization.RolePermission{},
-					&authorization.Policy{},
-					&authorization.TeamRole{},
-					&authorization.OrganizationRole{},
-					&authorization.UserRole{},
-					&authorization.Permission{},
-					&authorization.Role{},
+					&member.Member{},
 					&apikey.APIKey{},
 					&team.Team{},
-					&member.Member{},
 					&organization.Organization{},
 					&user.User{},
 				)
@@ -70,7 +55,7 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
 			SlowThreshold:             time.Second,
-			LogLevel:                  logger.Warn,
+			LogLevel:                  logger.Info,
 			IgnoreRecordNotFoundError: true,
 			Colorful:                  true,
 		},
@@ -86,7 +71,10 @@ func InitDB(cfg config.DatabaseConfig) (*gorm.DB, error) {
 		cfg.Timezone,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true, // disables implicit prepared statement usage
+	}), &gorm.Config{
 		Logger: newLogger,
 	})
 	if err != nil {
